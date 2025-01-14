@@ -69,4 +69,59 @@ class User {
         }
     }
 
+    public function register($username,$email,$password) {
+        $query = "INSERT INTO users (username,email,password,role,status)
+        VALUES (:username, :email, :password, :role, :status)";
+        try {
+            $stmt = $this->db->getConnection()->prepare($query);
+            $hashedPassword = password_hash($password, PASSWORD_DEFAULT);
+            $isFirstUser = $this->isFirstUser();
+            
+            $params = [
+                "username" => $username,
+                "email" => $email,
+                "password" => $hashedPassword,
+                "role" => $isFirstUser ? self::ROLE_ADMIN : null,
+                "status" => self::ACTIVE
+            ];
+            
+            $stmt->execute($params);
+            return $this->db->getConnection()->lastInsertId();
+        } catch (PDOException $e) {
+            return $e->getMessage();
+        }
+    }
+    public function login($email,$password) {
+        $query = "SELECT * FROM users WHERE email = :email";
+        try {
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute([
+                "email" => $email
+            ]);
+            
+            $user = $stmt->fetch(PDO::FETCH_ASSOC);
+            if ($user && password_verify($password, $user['password'])) {
+                unset($user['password']); // Don't send password back
+                return $user;
+            }
+            return false;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function updateRole($userId, $role) {
+        $query = 'UPDATE users SET role = :role WHERE id = :userId';
+        try {
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute([
+                'userId' => $userId,
+                'role' => $role
+            ]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
 }
