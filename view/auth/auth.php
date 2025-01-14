@@ -1,3 +1,8 @@
+<?php 
+require_once __DIR__ ."/../../helpers/CSRF.php";
+
+$csrfToken = generateCsrfToken();
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -88,13 +93,13 @@
 
                 <!-- Login Form -->
                 <div id="login-form" class="mt-8 bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-                    <form action="controller/auth.php" method="POST" class="space-y-6">
+                    <form action="../../controller/auth.php" method="POST" class="space-y-6">
                         <div>
                             <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
                             <div class="mt-1">
                                 <input id="email" name="email" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                                 <input class="hidden" name="login">
-                                <input class="hidden" name="CSRF" value="<?= $_SESSION['csrf_token']?>">
+                                <input class="hidden" name="CSRF" value="<?= $csrfToken?>">
                             </div>
                         </div>
 
@@ -126,12 +131,13 @@
 
                 <!-- Register Form -->
                 <div id="register-form" class="hidden mt-8 bg-white p-8 rounded-lg shadow-lg" data-aos="fade-up">
-                    <form action="/register" method="POST" class="space-y-6">
+                    <form action="../../controller/auth.php" method="POST" class="space-y-6">
                         <div>
                             <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                             <div class="mt-1">
                                 <input type="text" name="username" id="username" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="Choose a username">
-                                <input class="hidden" name="CSRF" value="<?= $_SESSION['csrf_token']?>">
+                                <input class="hidden" name="CSRF" value="<?= $csrfToken ?>">
+                                <input type="hidden" name="register" value="1">
                             </div>
                         </div>
 
