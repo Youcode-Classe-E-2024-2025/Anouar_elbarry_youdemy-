@@ -94,6 +94,7 @@
                             <div class="mt-1">
                                 <input id="email" name="email" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
                                 <input class="hidden" name="login">
+                                <input class="hidden" name="CSRF" value="<?= $_SESSION['csrf_token']?>">
                             </div>
                         </div>
 
@@ -130,6 +131,7 @@
                             <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                             <div class="mt-1">
                                 <input type="text" name="username" id="username" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="Choose a username">
+                                <input class="hidden" name="CSRF" value="<?= $_SESSION['csrf_token']?>">
                             </div>
                         </div>
 
