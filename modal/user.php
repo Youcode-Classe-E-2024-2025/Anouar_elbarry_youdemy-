@@ -57,4 +57,16 @@ class User {
         return $this->status;
     }
 
+    private function isFirstUser(): bool {
+        $query = "SELECT COUNT(*) as count FROM users";
+        try {
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute();
+            $result = $stmt->fetch(PDO::FETCH_ASSOC);
+            return intval($result['count']) === 0;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
 }
