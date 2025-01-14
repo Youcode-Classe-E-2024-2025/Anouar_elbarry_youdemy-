@@ -124,4 +124,28 @@ class User {
         }
     }
 
+    public function updateStatus($userId, $status) {
+        $query = 'UPDATE users SET status = :status WHERE id = :userId';
+        try {
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute([
+                'userId' => $userId,
+                'status' => $status
+            ]);
+            return $stmt->rowCount() > 0;
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
+
+    public function getUserById($userId) {
+        $query = "SELECT * FROM users WHERE id = :userId";
+        try {
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute(['userId' => $userId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
 }
