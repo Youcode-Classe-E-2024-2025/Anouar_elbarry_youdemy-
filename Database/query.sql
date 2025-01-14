@@ -1,14 +1,13 @@
-    ---USER----
 CREATE TABLE users 
 (
     id INT AUTO_INCREMENT PRIMARY KEY,
     username VARCHAR(255) NOT NULL UNIQUE,
     email VARCHAR(255) NOT NULL UNIQUE,
     password VARCHAR(255) NOT NULL,
-    role ENUM('student','teacher','admin') NOT NULL,
+    role ENUM('student', 'admin', 'teacher') DEFAULT NULL,
     status ENUM('ACTIVE','ARCHIVED','PENDING') NOT NULL DEFAULT 'ACTIVE',
     created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP
-)
+);
 
 CREATE TABLE categories (
     id INT AUTO_INCREMENT PRIMARY KEY,
@@ -29,7 +28,7 @@ CREATE TABLE courses (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     content ENUM('video','document'),
-    status ENUM('published','archived') NOT NULL DEFAULT 'published';
+    status ENUM('published','archived') NOT NULL DEFAULT 'published',
     teacher_id INT NOT NULL,
     category_id INT NOT NULL,
     created_At TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
