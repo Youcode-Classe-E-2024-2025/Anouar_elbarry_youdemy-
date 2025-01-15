@@ -1,15 +1,27 @@
 <?php
+include_once __DIR__ . "/../Database/Database.php";
 class Teacher extends User {
     private $createdCourses = [];
     private $totalStudents = 0;
 
-    public function createCourse($courseData) {
-        // Logic to create a new course
-        $course = new Course($courseData['title'], $courseData['description'], $this->id);
-        $this->createdCourses[] = $course;
-        return $course;
+    private Database $db;
+
+    public function __construct() {
+        $this->db = new Database();
     }
 
+    public function createCourse($courseData) {
+        // Logic to create a new course
+        return ;
+    }
+    public function getrequests(){
+          $conn = $this->db->getConnection();
+          $query = "SELECT * FROM users WHERE status = 'PENDING'";
+          $stmt = $conn->prepare($query);
+          $stmt->execute();
+          $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+          return $result;
+    }
     public function updateCourse($courseId, $data) {
         // Logic to update a course
         return true;
