@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -41,8 +42,10 @@
     </script>
     <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.1.1/css/all.min.css" integrity="sha512-KfkfwYDsLkIlwQp6LFnl8zNdLGxu9YAA1QvwINks4PhcElQSvqcyVLLD9aMhXd13uQjoXtEKNosOWaZqXgel0g==" crossorigin="anonymous" referrerpolicy="no-referrer" />
 </head>
 <body class="bg-gradient-to-b from-primary-50 to-white">
+
     <!-- Navigation -->
     <nav class="bg-white/80 backdrop-blur-md shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4">
@@ -54,11 +57,28 @@
                     <a href="/courses.html" class="text-gray-600 hover:text-primary-600 transition-colors">Courses</a>
                     <a href="#features" class="text-gray-600 hover:text-primary-600 transition-colors">Features</a>
                     <a href="#testimonials" class="text-gray-600 hover:text-primary-600 transition-colors">Testimonials</a>
+                    <?php 
+                    if(!isset($_SESSION['userId'])) :?>
                     <a href="view/auth/auth.php" class="text-primary-600 hover:text-primary-700">Login</a>
-                    <a href="view/auth/auth.php" class="text-primary-600 hover:text-primary-700">Dashboard</a>
                     <a href="view/auth/auth.php" class="bg-gradient-to-r from-primary-600 to-secondary-500 text-white px-6 py-2 rounded-full hover:from-primary-700 hover:to-secondary-600 transition-colors shadow-lg hover:shadow-primary-500/25">
                         Sign Up
                     </a>
+                    <?php else : ?>
+                        <?php if( $_SESSION['status'] === 'ACTIVE')  :?>
+                        <a href="view/<?= $_SESSION['role'] ?>/dashboard.php" class="text-primary-600 hover:text-primary-700">Dashboard</a>
+                        <?php endif ?>
+                        <div class="relative group">
+                        <button class="flex items-center space-x-2 text-gray-600 hover:text-primary-600 transition-colors">
+                            <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=<?= $_SESSION['username'] ?>" alt="<?= $_SESSION['username'] ?>">
+                            <span><?= $_SESSION['username'] ?></span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 hidden group-hover:block">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50">Profile Settings</a>
+                            <a href="../../controller/signout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sign Out</a>
+                        </div>
+                    </div>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
@@ -221,15 +241,6 @@
                 </div>
             </div>
         </div>
-    </section>
-
-    <script>
-        AOS.init({
-            duration: 1000,
-            easing: 'ease-in-out',
-            once: true,
-            mirror: false
-        });
-    </script>
+        <script src="Assets/js/aos.js"></script>
 </body>
 </html>
