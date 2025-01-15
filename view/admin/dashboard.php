@@ -1,260 +1,176 @@
 <!DOCTYPE html>
-<html lang="fr" class="dark">
+<html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard</title>
+    <title>Admin Dashboard - EduPro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
-            darkMode: 'class',
             theme: {
                 extend: {
                     colors: {
-                        primary: {"50":"#eff6ff","100":"#dbeafe","200":"#bfdbfe","300":"#93c5fd","400":"#60a5fa","500":"#3b82f6","600":"#2563eb","700":"#1d4ed8","800":"#1e40af","900":"#1e3a8a","950":"#172554"}
+                        primary: {
+                            50: '#FFF5F5',
+                            100: '#FED7D7',
+                            200: '#FEB2B2',
+                            300: '#FC8181',
+                            400: '#F56565',
+                            500: '#E53E3E',
+                            600: '#C53030',
+                            700: '#9B2C2C',
+                            800: '#822727',
+                            900: '#63171B',
+                        },
+                        secondary: {
+                            50: '#FFFAF0',
+                            100: '#FEEBCB',
+                            200: '#FBD38D',
+                            300: '#F6AD55',
+                            400: '#ED8936',
+                            500: '#DD6B20',
+                            600: '#C05621',
+                            700: '#9C4221',
+                            800: '#7B341E',
+                            900: '#652B19',
+                        }
                     }
                 }
             }
         }
     </script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
-<body class="bg-gray-100 dark:bg-gray-900">
-    <div class="min-h-screen">
-        <!-- Sidebar -->
-        <aside class="fixed inset-y-0 left-0 bg-white dark:bg-gray-800 shadow-lg max-h-screen w-64">
-            <div class="flex flex-col justify-between h-full">
-                <div class="flex-grow">
-                    <div class="px-4 py-6 text-center border-b">
-                        <h2 class="text-xl font-semibold leading-6 text-gray-800 dark:text-white">Administration</h2>
-                    </div>
-                    <nav class="p-4 space-y-2">
-                        <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium text-primary-600 bg-primary-50 dark:bg-primary-900/50 dark:text-primary-100 rounded-lg group">
-                            <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6"></path>
-                            </svg>
-                            Tableau de bord
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                            Cours
-                            <span class="ml-auto bg-blue-100 text-blue-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-blue-900 dark:text-blue-300">
-                                156
-                            </span>
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
-                            Enseignants
-                            <span class="ml-auto bg-red-100 text-red-800 text-xs font-medium px-2.5 py-0.5 rounded dark:bg-red-900 dark:text-red-300">
-                                3
-                            </span>
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
-                            </svg>
-                            Utilisateurs
-                        </a>
-                        <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium text-gray-900 dark:text-white rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700 group">
-                            <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
-                            </svg>
-                            Catégories & Tags
-                        </a>
-                    </nav>
+<body class="bg-gradient-to-b from-primary-50 to-white min-h-screen">
+    <!-- Navigation -->
+    <nav class="bg-white/80 backdrop-blur-md shadow-lg fixed w-full z-50">
+        <div class="max-w-7xl mx-auto px-4">
+            <div class="flex justify-between items-center h-16">
+                <div class="flex items-center">
+                    <a href="/" class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">EduPro</a>
                 </div>
-                <div class="p-4 border-t">
-                    <a href="#" class="flex items-center px-4 py-2.5 text-sm font-medium text-red-600 rounded-lg hover:bg-red-50 group">
-                        <svg class="w-5 h-5 mr-2.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
-                        </svg>
-                        Déconnexion
-                    </a>
+                <div class="hidden md:flex items-center space-x-8">
+                    <a href="#" class="text-gray-600 hover:text-primary-600 transition-colors">Dashboard</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-600 transition-colors">Users</a>
+                    <a href="#" class="text-gray-600 hover:text-primary-600 transition-colors">Settings</a>
+                    <div class="relative group">
+                        <button class="flex items-center space-x-2 text-gray-600 hover:text-primary-600 transition-colors">
+                            <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=Admin" alt="Admin">
+                            <span>Admin</span>
+                            <i class="fas fa-chevron-down text-xs"></i>
+                        </button>
+                        <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 hidden group-hover:block">
+                            <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50">Profile Settings</a>
+                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sign Out</a>
+                        </div>
+                    </div>
                 </div>
             </div>
-        </aside>
+        </div>
+    </nav>
 
-        <!-- Main content -->
-        <main class="ml-64 p-8">
-            <!-- Stats Overview -->
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-6">
-                <!-- Total Courses -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+    <!-- Main Content -->
+    <main class="pt-20">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+            <!-- Welcome Section -->
+            <div class="mb-8" data-aos="fade-up">
+                <h1 class="text-3xl font-bold text-gray-900">
+                    Welcome, <span class="bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">Administrator</span>
+                </h1>
+                <p class="mt-2 text-gray-600">Monitor and manage your platform's performance</p>
+            </div>
+
+            <!-- Quick Stats -->
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+                <!-- Total Users -->
+                <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="100">
                     <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-blue-100 dark:bg-blue-900">
-                            <svg class="w-8 h-8 text-blue-600 dark:text-blue-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white">
+                            <i class="fas fa-users"></i>
                         </div>
                         <div class="ml-4">
-                            <h2 class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Cours</h2>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-white">156</p>
+                            <h3 class="text-lg font-semibold text-gray-900">Total Users</h3>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">2,543</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Total Students -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <!-- Active Courses -->
+                <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="200">
                     <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-green-100 dark:bg-green-900">
-                            <svg class="w-8 h-8 text-green-600 dark:text-green-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white">
+                            <i class="fas fa-book-open"></i>
                         </div>
                         <div class="ml-4">
-                            <h2 class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Étudiants</h2>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-white">2,845</p>
+                            <h3 class="text-lg font-semibold text-gray-900">Active Courses</h3>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">156</p>
                         </div>
                     </div>
                 </div>
 
-                <!-- Total Teachers -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
+                <!-- Teachers -->
+                <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="300">
                     <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-purple-100 dark:bg-purple-900">
-                            <svg class="w-8 h-8 text-purple-600 dark:text-purple-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 7l-.867 12.142A2 2 0 0116.138 21H7.862a2 2 0 01-1.995-1.858L5 7m5 4v6m4-6v6m1-10V4a1 1 0 00-1-1h-4a1 1 0 00-1 1v3M4 7h16"></path>
-                            </svg>
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white">
+                            <i class="fas fa-chalkboard-teacher"></i>
                         </div>
                         <div class="ml-4">
-                            <h2 class="text-gray-600 dark:text-gray-400 text-sm font-medium">Total Enseignants</h2>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-white">48</p>
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Pending Teachers -->
-                <div class="bg-white dark:bg-gray-800 rounded-lg shadow-sm p-6">
-                    <div class="flex items-center">
-                        <div class="p-3 rounded-full bg-yellow-100 dark:bg-yellow-900">
-                            <svg class="w-8 h-8 text-yellow-600 dark:text-yellow-300" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <h2 class="text-gray-600 dark:text-gray-400 text-sm font-medium">Enseignants en attente</h2>
-                            <p class="text-2xl font-semibold text-gray-800 dark:text-white">3</p>
+                            <h3 class="text-lg font-semibold text-gray-900">Teachers</h3>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">48</p>
                         </div>
                     </div>
                 </div>
             </div>
 
-            <!-- Recent Activity -->
-            <div class="bg-white dark:bg-gray-800 shadow rounded-lg mb-8">
-                <div class="px-4 py-5 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                        Activité récente
-                    </h3>
-                </div>
-                <ul class="divide-y divide-gray-200 dark:divide-gray-700">
-                    <li class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <div class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-blue-100 dark:bg-blue-900">
-                                    <span class="text-sm font-medium leading-none text-blue-600 dark:text-blue-300">JD</span>
-                                </span>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                    John Doe s'est inscrit au cours "Développement web avancé"
-                                </p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    Il y a 2 heures
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <div class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-green-100 dark:bg-green-900">
-                                    <span class="text-sm font-medium leading-none text-green-600 dark:text-green-300">AS</span>
-                                </span>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                    Alice Smith a créé un nouveau cours "Conception UI/UX"
-                                </p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    Il y a 5 heures
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                    <li class="p-4 hover:bg-gray-50 dark:hover:bg-gray-700">
-                        <div class="flex items-center space-x-4">
-                            <div class="flex-shrink-0">
-                                <span class="inline-flex items-center justify-center h-8 w-8 rounded-full bg-purple-100 dark:bg-purple-900">
-                                    <span class="text-sm font-medium leading-none text-purple-600 dark:text-purple-300">RJ</span>
-                                </span>
-                            </div>
-                            <div class="flex-1 min-w-0">
-                                <p class="text-sm font-medium text-gray-900 dark:text-white truncate">
-                                    Robert Johnson a terminé le cours "Programmation Python"
-                                </p>
-                                <p class="text-sm text-gray-500 dark:text-gray-400">
-                                    Hier
-                                </p>
-                            </div>
-                        </div>
-                    </li>
-                </ul>
-            </div>
+            <div class="grid grid-cols-1 lg:grid-cols-4 ">
+               
 
-            <!-- Quick Actions -->
-            <div class="bg-white dark:bg-gray-800 shadow rounded-lg">
-                <div class="px-4 py-5 border-b border-gray-200 dark:border-gray-700">
-                    <h3 class="text-lg font-medium text-gray-900 dark:text-white">
-                        Actions rapides
-                    </h3>
-                </div>
-                <div class="p-6 grid grid-cols-1 gap-6 sm:grid-cols-2">
-                    <a href="courses.html" class="group flex items-center p-4 border rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/50">
-                        <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-gray-400 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6.253v13m0-13C10.832 5.477 9.246 5 7.5 5S4.168 5.477 3 6.253v13C4.168 18.477 5.754 18 7.5 18s3.332.477 4.5 1.253m0-13C13.168 5.477 14.754 5 16.5 5c1.747 0 3.332.477 4.5 1.253v13C19.832 18.477 18.247 18 16.5 18c-1.746 0-3.332.477-4.5 1.253"></path>
-                            </svg>
-                        </div>
-                        <div class="ml-4">
-                            <p class="text-base font-medium text-gray-900 dark:text-white group-hover:text-blue-600">
-                                Gérer les cours
-                            </p>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Afficher et gérer tous les cours
-                            </p>
-                        </div>
-                    </a>
+             <!-- Quick Actions -->
+             <div class="lg:col-span-2 lg:col-start-2 ">
+                    <div class="bg-white/80 backdrop-blur-md rounded-xl shadow-lg p-6" data-aos="fade-up">
+                        <h2 class="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
+                        <div class="space-y-4">
+                            <!-- User Management -->
+                            <button class="w-full flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-users text-gray-400 group-hover:text-primary-500"></i>
+                                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Users</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400 group-hover:text-primary-500"></i>
+                            </button>
 
-                    <a href="users.html" class="group flex items-center p-4 border rounded-lg hover:border-blue-500 hover:bg-blue-50 dark:hover:bg-blue-900/50">
-                        <div class="flex-shrink-0">
-                            <svg class="h-6 w-6 text-gray-400 group-hover:text-blue-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4.354a4 4 0 110 5.292M15 21H3v-1a6 6 0 0112 0v1zm0 0h6v-1a6 6 0 00-9-5.197M13 7a4 4 0 11-8 0 4 4 0 018 0z"></path>
-                            </svg>
+                            <!-- Content Management -->
+                            <button class="w-full flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-book text-gray-400 group-hover:text-primary-500"></i>
+                                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Content</span>
+                                </div>
+                                <i class="fas fa-chevron-right text-gray-400 group-hover:text-primary-500"></i>
+                            </button>
+
+                            <!-- Teacher Requests -->
+                            <button class="w-full flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-colors group">
+                                <div class="flex items-center">
+                                    <i class="fas fa-chalkboard-teacher text-gray-400 group-hover:text-primary-500"></i>
+                                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-primary-600">Teacher Requests</span>
+                                </div>
+                                <span class="bg-primary-100 text-primary-600 text-xs px-2 py-1 rounded-full">3</span>
+                            </button>
                         </div>
-                        <div class="ml-4">
-                            <p class="text-base font-medium text-gray-900 dark:text-white group-hover:text-blue-600">
-                                Gérer les utilisateurs
-                            </p>
-                            <p class="mt-1 text-sm text-gray-500 dark:text-gray-400">
-                                Afficher et gérer les comptes utilisateurs
-                            </p>
-                        </div>
-                    </a>
+                    </div>
                 </div>
             </div>
-        </main>
-    </div>
+        </div>
+    </main>
 
     <script>
-        // Toggle dark mode
-        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
-            document.documentElement.classList.add('dark')
-        } else {
-            document.documentElement.classList.remove('dark')
-        }
+        // Initialize AOS
+        AOS.init({
+            duration: 800,
+            once: true
+        });
     </script>
 </body>
 </html>
