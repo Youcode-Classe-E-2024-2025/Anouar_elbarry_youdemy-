@@ -1,7 +1,19 @@
 <?php
 class Admin extends User {
+   
+    private Database $db;
+
+    public function __construct() {
+        $this->db = new Database();
+    }
     public function validateTeacher($teacherId) {
-        // Logic to validate a teacher
+        $conn = $this->db->getConnection();
+        $query = "UPDATE users SET status = :status WHERE id = :teacherId";
+        $stmt = $conn->prepare($query);
+        $stmt->execute([
+            "teacherId"=> $teacherId,
+            "status"=> self::ACTIVE
+        ]);
         return true;
     }
 
