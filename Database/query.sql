@@ -28,6 +28,7 @@ CREATE TABLE courses (
     title VARCHAR(255) NOT NULL,
     description TEXT,
     content ENUM('video','document'),
+     video_path VARCHAR(500) DEFAULT NULL,
     status ENUM('published','archived') NOT NULL DEFAULT 'published',
     teacher_id INT NOT NULL,
     category_id INT NOT NULL,
