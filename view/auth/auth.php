@@ -1,6 +1,6 @@
 <?php 
 require_once __DIR__ ."/../../helpers/CSRF.php";
-
+session_start();
 $csrfToken = generateCsrfToken();
 ?>
 <!DOCTYPE html>
@@ -48,6 +48,28 @@ $csrfToken = generateCsrfToken();
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body class="bg-gradient-to-b from-primary-50 to-white min-h-screen">
+<?php if(isset($_SESSION["successA"])): ?>
+    <div id="successAlert" class="fixed top-4 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span><?php echo $_SESSION["successA"]; ?></span>
+            <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <?php unset($_SESSION["successA"]); endif; ?>
+    <?php if(isset($_SESSION["errorA"])): ?>
+    <div id="errorAlert" class="fixed top-20 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span><?php echo $_SESSION["errorA"]; ?></span>
+            <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <?php unset($_SESSION["errorA"]); endif; ?>
     <!-- Navigation -->
     <nav class="bg-white/80 backdrop-blur-md shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4">
@@ -98,8 +120,8 @@ $csrfToken = generateCsrfToken();
                             <label for="email" class="block text-sm font-medium text-gray-700">Email address</label>
                             <div class="mt-1">
                                 <input id="email" name="email" type="email" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm">
-                                <input class="hidden" name="login">
-                                <input class="hidden" name="CSRF" value="<?= $csrfToken?>">
+                                <input type="hidden" name="login">
+                                <input type="hidden" name="CSRF" value="<?= $csrfToken?>">
                             </div>
                         </div>
 
@@ -136,7 +158,7 @@ $csrfToken = generateCsrfToken();
                             <label for="username" class="block text-sm font-medium text-gray-700">Username</label>
                             <div class="mt-1">
                                 <input type="text" name="username" id="username" required class="appearance-none block w-full px-3 py-2 border border-gray-300 rounded-md shadow-sm placeholder-gray-400 focus:outline-none focus:ring-primary-500 focus:border-primary-500 sm:text-sm" placeholder="Choose a username">
-                                <input class="hidden" name="CSRF" value="<?= $csrfToken ?>">
+                                <input type="hidden" name="CSRF" value="<?= $csrfToken ?>">
                                 <input type="hidden" name="register" value="1">
                             </div>
                         </div>
@@ -179,15 +201,9 @@ $csrfToken = generateCsrfToken();
             </div>
         </div>
     </div>
-
+    <script src="../../Assets/js/sweetAlert.js"></script>
+    <script src="../../Assets/js/aos.js"></script>
     <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 1000,
-            easing: 'ease-in-out',
-            once: true,
-            mirror: false
-        });
 
         // Tab switching functionality
         function switchTab(tab) {
