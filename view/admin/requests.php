@@ -1,10 +1,10 @@
 <?php
+session_start();
 require_once __DIR__ . "/../../modal/teacher.php"; 
 require_once __DIR__ . "/../../modal/admin.php"; 
 require_once __DIR__ . "/../../modal/user.php"; 
-$user = new User();
-$admin = new Admin();
 $teacher = new Teacher();
+$teachers = $teacher->getteachersByStatus();
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -52,6 +52,30 @@ $teacher = new Teacher();
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body class="bg-gradient-to-b from-primary-50 to-white min-h-screen">
+      <!-- Success/Error Messages -->
+      <?php if(isset($_SESSION["successRE"])): ?>
+    <div id="successAlert" class="fixed top-20 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span><?php echo $_SESSION["successRE"]; ?></span>
+            <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <?php unset($_SESSION["successRE"]); endif; ?>
+
+    <?php if(isset($_SESSION["errorRE"])): ?>
+    <div id="errorAlert" class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span><?php echo $_SESSION["errorRE"]; ?></span>
+            <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <?php unset($_SESSION["errorRE"]); endif; ?>
     <!-- Navigation -->
     <nav class="bg-white/80 backdrop-blur-md shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4">
@@ -92,7 +116,7 @@ $teacher = new Teacher();
             <!-- Requests Grid -->
             <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6" data-aos="fade-up">
                 <!-- Request Card 1 -->
-                 <?php $teachers = $teacher->getusersByStatus($user::PENDING) ;
+                 <?php 
                        foreach($teachers as $teacher):?>
                 <div class="bg-white/80 backdrop-blur-md rounded-xl shadow-lg p-6">
                     <div class="flex items-start justify-between mb-4">
@@ -109,25 +133,17 @@ $teacher = new Teacher();
                     </div>
                     <div class="space-y-3 mb-4">
                         <div>
-                            <span class="text-sm font-medium text-gray-500">Expertise:</span>
-                            <p class="text-sm text-gray-900">Web Development, JavaScript, React</p>
-                        </div>
-                        <div>
-                            <span class="text-sm font-medium text-gray-500">Experience:</span>
-                            <p class="text-sm text-gray-900">5 years teaching experience</p>
-                        </div>
-                        <div>
                             <span class="text-sm font-medium text-gray-500">Application Date:</span>
-                            <p class="text-sm text-gray-900">Jan 15, 2024</p>
+                            <p class="text-sm text-gray-900"><?= $teacher['created_At'] ?></p>
                         </div>
                     </div>
                     <div class="flex space-x-2">
-                        <button class="flex-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
+                        <a href="../../controller/admin/requestsController.php?id=<?= htmlspecialchars($teacher['id'] ?? '') ?>&action=Accept" class="flex-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
                             Accept
-                        </button>
-                        <button class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
-                            Decline
-                        </button>
+                        </a>
+                        <a href="../../controller/admin/requestsController.php?id=<?= htmlspecialchars($teacher['id']) ?? ''?>&action=Reject" class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                            Reject
+                        </a>
                     </div>
                 </div>
                <?php endforeach ?>
