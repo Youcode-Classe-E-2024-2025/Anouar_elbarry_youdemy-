@@ -1,5 +1,6 @@
 <?php
 include_once __DIR__ . "/../Database/Database.php";
+include_once __DIR__ . "/user.php";
 class Teacher extends User {
     private $createdCourses = [];
     private $totalStudents = 0;
@@ -14,11 +15,22 @@ class Teacher extends User {
         // Logic to create a new course
         return ;
     }
-    public function getrequests(){
+    public function getteachersByStatus($status = null) {
           $conn = $this->db->getConnection();
-          $query = "SELECT * FROM users WHERE status = 'PENDING'";
-          $stmt = $conn->prepare($query);
-          $stmt->execute();
+          $query = "SELECT * FROM users WHERE role = 'teacher'";
+          if( $status != null ) {
+            $query .= " AND status = :status";
+            $stmt = $conn->prepare($query);
+            $stmt->execute(
+                [
+                    "status"=> $status
+                     ]
+            );
+          }else {
+            $stmt = $conn->prepare($query);
+            $stmt->execute();
+          }
+          
           $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
           return $result;
     }
