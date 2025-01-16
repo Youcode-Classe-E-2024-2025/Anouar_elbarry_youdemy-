@@ -1,3 +1,7 @@
+<?php
+include_once __DIR__ ."/../../controller/courseControler.php";
+include_once __DIR__ ."/../../helpers/helper.php";
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -78,15 +82,15 @@
             <nav class="flex mb-8" aria-label="Breadcrumb">
                 <ol class="inline-flex items-center space-x-1 md:space-x-3">
                     <li class="inline-flex items-center">
-                        <a href="dashboard.html" class="text-gray-700 hover:text-primary-600">
+                        <a href="#" onclick="history.back()" class="text-gray-700 hover:text-primary-600">
                             <i class="fas fa-home mr-2"></i>
-                            Dashboard
+                            Back
                         </a>
                     </li>
                     <li>
                         <div class="flex items-center">
                             <i class="fas fa-chevron-right text-gray-400 mx-2"></i>
-                            <span class="text-gray-500">Modern JavaScript 2025</span>
+                            <span class="text-gray-500"><?= $course['title'] ?></span>
                         </div>
                     </li>
                 </ol>
@@ -95,7 +99,7 @@
             <!-- Course Header -->
             <div class="bg-white/80 backdrop-blur-md rounded-xl shadow-lg overflow-hidden mb-8" data-aos="fade-up">
                 <div class="relative h-64 md:h-96">
-                    <img src="https://images.unsplash.com/photo-1498050108023-c5249f4df085" 
+                    <img src="<?= $course['img_cover'] ?>" 
                          alt="Course Cover" 
                          class="w-full h-full object-cover">
                     <div class="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent"></div>
@@ -105,16 +109,16 @@
                                 Web Development
                             </span>
                             <span class="px-2 py-1 text-xs font-semibold bg-white/20 rounded-full">
-                                <i class="fas fa-video"></i> Video
+                                <i class="fas fa-video"></i> <?= $course['content'] ?>
                             </span>
                         </div>
-                        <h1 class="text-3xl font-bold mb-2">Modern JavaScript 2025</h1>
+                        <h1 class="text-3xl font-bold mb-2"><?= $course['title'] ?></h1>
                         <div class="flex items-center space-x-4">
                             <div class="flex items-center space-x-2">
-                                <img src="https://ui-avatars.com/api/?name=John+Smith" 
+                                <img src="https://ui-avatars.com/api/?name=<?= $course['instructor'] ?>" 
                                      alt="Instructor" 
                                      class="w-8 h-8 rounded-full border-2 border-white">
-                                <span>Instructor: John Smith</span>
+                                <span>Instructor: <?= $course['instructor'] ?></span>
                             </div>
                         </div>
                     </div>
@@ -129,15 +133,8 @@
                     <div class="bg-white/80 backdrop-blur-md rounded-xl shadow-lg p-6 mb-8" data-aos="fade-up">
                         <h2 class="text-2xl font-bold text-gray-900 mb-4">Course Description</h2>
                         <div class="prose max-w-none">
-                            <p class="text-gray-600">Master modern JavaScript with this comprehensive course. Learn everything from basic syntax to advanced concepts like async/await, ES6+ features, and modern development practices. Perfect for beginners and intermediate developers looking to upgrade their JavaScript skills.</p>
-                            <p class="text-gray-600 mt-4">Topics covered:</p>
-                            <ul class="list-disc list-inside text-gray-600 mt-2">
-                                <li>ES6+ Features</li>
-                                <li>Async Programming</li>
-                                <li>Modern JavaScript Patterns</li>
-                                <li>DOM Manipulation</li>
-                                <li>Error Handling</li>
-                            </ul>
+                            <p class="text-gray-600"><?= $course['description'] ?>.</p>
+                           
                         </div>
                     </div>
 
@@ -163,17 +160,21 @@
                                 </div>
                                 <div>
                                     <p class="text-sm text-gray-500">Category</p>
-                                    <p class="font-medium text-gray-900">Web Development</p>
+                                    <p class="font-medium text-gray-900"><?= $course['category'] ?></p>
                                 </div>
                             </div>
 
                             <div class="flex items-center space-x-3">
                                 <div class="flex items-center justify-center w-10 h-10 rounded-full bg-primary-50 text-primary-600">
+                                    <?php if($course['content'] === 'video') :?>
                                     <i class="fas fa-video"></i>
+                                    <?php else :?>
+                                    <i class="fas fa-file-alt"></i>
+                                    <?php endif ?>
                                 </div>
                                 <div>
                                     <p class="text-sm text-gray-500">Content Type</p>
-                                    <p class="font-medium text-gray-900">Video Course</p>
+                                    <p class="font-medium text-gray-900"><?= $course['content'] ?> Course</p>
                                 </div>
                             </div>
 
@@ -183,7 +184,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm text-gray-500">Instructor</p>
-                                    <p class="font-medium text-gray-900">John Smith</p>
+                                    <p class="font-medium text-gray-900"><?= $course['instructor'] ?></p>
                                 </div>
                             </div>
 
@@ -193,7 +194,7 @@
                                 </div>
                                 <div>
                                     <p class="text-sm text-gray-500">Last Updated</p>
-                                    <p class="font-medium text-gray-900">January 14, 2025</p>
+                                    <p class="font-medium text-gray-900"><?= convertDateFormat($course['created_At']) ?></p>
                                 </div>
                             </div>
                         </div>
