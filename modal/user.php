@@ -5,6 +5,7 @@ class User {
     const ROLE_TEACHER = "teacher";
     const ROLE_STUDENT = "student";
     const ACTIVE = "ACTIVE";
+    const REJECTED = "REJECTED";
     const ARCHIVED = "ARCHIVED";
     const PENDING = "PENDING";
     protected $status;
@@ -56,7 +57,17 @@ class User {
     public function getStatus() {
         return $this->status;
     }
-
+    
+    public function getUserById($userId) {
+        $query = "SELECT * FROM users WHERE id = :userId";
+        try {
+            $stmt = $this->db->getConnection()->prepare($query);
+            $stmt->execute(['userId' => $userId]);
+            return $stmt->fetch(PDO::FETCH_ASSOC);
+        } catch (PDOException $e) {
+            return false;
+        }
+    }
     private function isFirstUser(): bool {
         $query = "SELECT COUNT(*) as count FROM users";
         try {
@@ -138,14 +149,4 @@ class User {
         }
     }
 
-    public function getUserById($userId) {
-        $query = "SELECT * FROM users WHERE id = :userId";
-        try {
-            $stmt = $this->db->getConnection()->prepare($query);
-            $stmt->execute(['userId' => $userId]);
-            return $stmt->fetch(PDO::FETCH_ASSOC);
-        } catch (PDOException $e) {
-            return false;
-        }
-    }
 }
