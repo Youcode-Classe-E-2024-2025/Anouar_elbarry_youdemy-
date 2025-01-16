@@ -19,7 +19,7 @@ class Course {
      * @param array $tagIds
      * @return bool
      */
-    public function create($title, $description, $content, $teacherId, $categoryId, $tagIds = []) {
+    public function create($title, $description, $content, $teacherId, $categoryId, $tagIds = [], ) {
         // To be implemented
     }
 
@@ -64,7 +64,24 @@ class Course {
      * @return array Returns a list of all courses.
      */
     public function getAllCourses() {
-        // To be implemented
+        $conn = $this->db->getConnection();
+        $query = "SELECT 
+                  c.*,
+                  u.username as instructor,
+                  cg.name as category
+                  FROM courses c
+                  INNER JOIN users u ON c.teacher_id = u.id
+                  INNER JOIN categories cg ON c.category_id = cg.id
+                  ";
+        try{
+            $stmt = $conn->prepare($query);
+        $stmt->execute();
+        $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+        return $result;
+        }
+        catch(PDOException $e) {
+            return [1, $e->getMessage()];
+        }
     }
 
     /**
