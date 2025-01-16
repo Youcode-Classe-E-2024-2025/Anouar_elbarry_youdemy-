@@ -127,7 +127,14 @@ $teachers = $teacher->getteachersByStatus();
                                 <p class="text-sm text-gray-500"><?= $teacher['email'] ?></p>
                             </div>
                         </div>
-                        <span class="px-2 py-1 text-xs font-medium rounded-full bg-yellow-100 text-yellow-800">
+                        <span class="px-2 py-1 text-xs font-medium rounded-full <?php switch($teacher['status']){
+                            case 'REJECTED': echo'bg-red-600';
+                            break;
+                            case 'ACTIVE': echo'bg-green-600';
+                            break;
+                            case 'PENDING': echo'bg-yellow-600';
+                            break;
+                        } ?>  text-white">
                         <?= $teacher['status'] ?>
                         </span>
                     </div>
