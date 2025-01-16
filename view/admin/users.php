@@ -48,6 +48,30 @@ include_once __DIR__ . "/../../helpers/helper.php";
     <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body class="bg-gradient-to-b from-primary-50 to-white min-h-screen">
+          <!-- Success/Error Messages -->
+          <?php if(isset($_SESSION["successUS"])): ?>
+    <div id="successAlert" class="fixed top-20 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50">
+        <div class="flex items-center">
+            <i class="fas fa-check-circle mr-2"></i>
+            <span><?php echo $_SESSION["successUS"]; ?></span>
+            <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <?php unset($_SESSION["successUS"]); endif; ?>
+
+    <?php if(isset($_SESSION["errorUS"])): ?>
+    <div id="errorAlert" class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+        <div class="flex items-center">
+            <i class="fas fa-exclamation-circle mr-2"></i>
+            <span><?php echo $_SESSION["errorUS"]; ?></span>
+            <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
+                <i class="fas fa-times"></i>
+            </button>
+        </div>
+    </div>
+    <?php unset($_SESSION["errorUS"]); endif; ?>
     <!-- Navigation -->
     <nav class="bg-white/80 backdrop-blur-md shadow-lg fixed w-full z-50">
         <div class="max-w-7xl mx-auto px-4">
