@@ -1,3 +1,12 @@
+<?php
+include_once __DIR__ ."/../../modal/course.php";
+include_once __DIR__ ."/../../modal/enrollment.php";
+include_once __DIR__ ."/../../helpers/helper.php";
+$course = new Course();
+$enrolment = new Enrollment();
+$courses = $course->getAllCourses();
+
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -109,36 +118,38 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <!-- Sample Course Row -->
+                         <?php foreach($courses as $course): ?>
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
                                     <div class="h-10 w-10 rounded-lg bg-primary-100 flex items-center justify-center">
-                                        <i class="fas fa-laptop-code text-primary-600"></i>
+                                    <img src="<?= $course['img_cover'] ?>" class="h-10 w-10 object-cover rounded-lg">
                                     </div>
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">Advanced Web Development</div>
-                                        <div class="text-sm text-gray-500">12 Lessons • 6 Hours</div>
+                                        <div class="text-sm font-medium text-gray-900"><?= $course['title'] ?></div>
+                                        <div class="text-sm text-gray-500">published:<?= $course['created_At'] ?></div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=John+Smith" alt="Instructor">
-                                    <span class="ml-2 text-sm text-gray-900">John Smith</span>
+                                    <img class="h-8 w-8 rounded-full" src="https://ui-avatars.com/api/?name=<?= $course['instructor'] ?>" alt="<?= $course['instructor'] ?>">
+                                    <span class="ml-2 text-sm text-gray-900"><?= $course['instructor'] ?></span>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-blue-100 text-blue-800">
-                                    Web Development
+                                <?= $course['category'] ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Active
+                                <?= $course['status'] ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                248 Students
+                            <?php  $enrollmentCount = $enrolment->getEnrollmentsByCourse($course['id']);
+                                   echo $enrollmentCount[0]['COUNT(*)']; ?> Students
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                 <button class="text-primary-600 hover:text-primary-900" title="View Details">
@@ -152,7 +163,8 @@
                                 </button>
                             </td>
                         </tr>
-                        <!-- More course rows would be dynamically added here -->
+                        <?php endforeach ?>
+                        
                     </tbody>
                 </table>
 
@@ -170,7 +182,7 @@
                         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                             <div>
                                 <p class="text-sm text-gray-700">
-                                    Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">45</span> results
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium"><?= count($courses) ?></span> results
                                 </p>
                             </div>
                             <div>
@@ -194,8 +206,8 @@
             </div>
         </div>
     </main>
-    <script src="../Assets/js/sweetAlert.js"></script>
-    <script src="../Assets/js/aos.js"></script>
+    <script src="../../Assets/js/sweetAlert.js"></script>
+    <script src="../../Assets/js/aos.js"></script>
     
 </body>
 </html>
