@@ -1,3 +1,7 @@
+<?php 
+include_once __DIR__ . "/../../controller/admin/usersController.php";
+include_once __DIR__ . "/../../helpers/helper.php";
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -92,11 +96,6 @@
                         <option value="pending">Pending</option>
                     </select>
                 </div>
-                <!-- Add User Button -->
-                <button class="px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors flex items-center gap-2">
-                    <i class="fas fa-plus"></i>
-                    Add New User
-                </button>
             </div>
 
             <!-- Users Table -->
@@ -113,41 +112,69 @@
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <!-- Sample User Row -->
+                         <?php foreach($users as $user): ?>
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
-                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=John+Doe" alt="User">
+                                    <img class="h-10 w-10 rounded-full" src="https://ui-avatars.com/api/?name=<?= $user['username'] ?>" alt="<?= $user['username'] ?>">
                                     <div class="ml-4">
-                                        <div class="text-sm font-medium text-gray-900">John Doe</div>
-                                        <div class="text-sm text-gray-500">john@example.com</div>
+                                        <div class="text-sm font-medium text-gray-900"><?= $user['username'] ?></div>
+                                        <div class="text-sm text-gray-500"><?= $user['email'] ?></div>
                                     </div>
                                 </div>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">
-                                    Teacher
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full
+                                <?php switch($user['role']){
+                            case 'admin': echo'bg-blue-200 text-blue-600';
+                            break;
+                            case 'student': echo'bg-gray-200 text-gray-600';
+                            break;
+                            case 'teacher': echo'bg-orange-200 text-orange-600';
+                            break;
+                        } ?> ">
+                                <?= strtoupper($user['role']) ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap">
-                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 text-green-800">
-                                    Active
+                                <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full <?php switch($user['status']){
+                            case 'REJECTED': echo'bg-primary-200 text-primary-600';
+                            break;
+                            case 'ACTIVE': echo'bg-green-200 text-green-600';
+                            break;
+                            case 'PENDING': echo'bg-yellow-200 text-yellow-600';
+                            break;
+                        } ?> ">
+                                <?= $user['status'] ?>
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
-                                Jan 15, 2024
+                            <?= convertDateFormat( $user['created_At']) ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
                                 <button class="text-primary-600 hover:text-primary-900" title="Edit">
                                     <i class="fas fa-edit"></i>
                                 </button>
+                                <?php if( $user['status'] !== 'ARCHIVED' &&  $user['status'] !== 'REJECTED'): ?>
                                 <button class="text-yellow-600 hover:text-yellow-900" title="Archive">
                                     <i class="fas fa-archive"></i>
                                 </button>
+                                <?php elseif($user['status'] === 'REJECTED'):?>
+                                    <button class="text-green-600 hover:text-green-900" title="Accept User">
+                                            <i class="fas fa-check"></i>
+                                    </button>
+                                 <?php else: ?>   
+                                    <button class="text-green-600 hover:text-green-900" title="Archive">
+                                    <i class="fas fa-check-circle"></i>
+                                </button>
+                                <?php endif ?>
                                 <button class="text-red-600 hover:text-red-900" title="Delete">
                                     <i class="fas fa-trash"></i>
                                 </button>
                             </td>
                         </tr>
+                        <?php endforeach ?>
+
                         <!-- More user rows would be dynamically added here -->
                     </tbody>
                 </table>
@@ -189,13 +216,7 @@
             </div>
         </div>
     </main>
-
-    <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 800,
-            once: true
-        });
-    </script>
+    <script src="../../Assets/js/sweetAlert.js"></script>
+    <script src="../../Assets/js/aos.js"></script>
 </body>
 </html>
