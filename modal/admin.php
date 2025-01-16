@@ -1,4 +1,5 @@
 <?php
+include_once __DIR__ . "/user.php";
 class Admin extends User {
    
     private Database $db;
@@ -9,12 +10,32 @@ class Admin extends User {
     public function validateTeacher($teacherId) {
         $conn = $this->db->getConnection();
         $query = "UPDATE users SET status = :status WHERE id = :teacherId";
-        $stmt = $conn->prepare($query);
-        $stmt->execute([
-            "teacherId"=> $teacherId,
-            "status"=> self::ACTIVE
-        ]);
-        return true;
+        try{
+            $stmt = $conn->prepare($query);
+            $stmt->execute([
+                "teacherId"=> $teacherId,
+                "status"=> self::ACTIVE
+            ]);
+            return true;
+        }catch(PDOException $e){
+            return false;
+        }
+        
+    }
+    public function rejectTeacher($teacherId) {
+        $conn = $this->db->getConnection();
+        $query = "UPDATE users SET status = :status WHERE id = :teacherId";
+        try{
+            $stmt = $conn->prepare($query);
+            $stmt->execute([
+                "teacherId"=> $teacherId,
+                "status"=> self::REJECTED
+            ]);
+            return true;
+        }catch(PDOException $e){
+            return false;
+        }
+        
     }
 
     public function manageUsers($action, $userId) {
