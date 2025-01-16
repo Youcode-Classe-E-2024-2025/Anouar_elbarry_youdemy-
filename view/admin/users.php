@@ -112,7 +112,10 @@ include_once __DIR__ . "/../../helpers/helper.php";
                     </thead>
                     <tbody class="bg-white divide-y divide-gray-200">
                         <!-- Sample User Row -->
-                         <?php foreach($users as $user): ?>
+                         <?php 
+                               $countUsers = 0;
+                               foreach($users as $user):
+                               if($user['status'] !== 'PENDING'): $countUsers++; ?>
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -173,9 +176,8 @@ include_once __DIR__ . "/../../helpers/helper.php";
                                 </button>
                             </td>
                         </tr>
+                        <?php endif ?>
                         <?php endforeach ?>
-
-                        <!-- More user rows would be dynamically added here -->
                     </tbody>
                 </table>
                 <!-- Pagination -->
@@ -192,7 +194,7 @@ include_once __DIR__ . "/../../helpers/helper.php";
                         <div class="hidden sm:flex-1 sm:flex sm:items-center sm:justify-between">
                             <div>
                                 <p class="text-sm text-gray-700">
-                                    Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium">97</span> results
+                                    Showing <span class="font-medium">1</span> to <span class="font-medium">10</span> of <span class="font-medium"><?= $countUsers ?></span> results
                                 </p>
                             </div>
                             <div>
