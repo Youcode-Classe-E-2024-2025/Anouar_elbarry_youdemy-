@@ -137,6 +137,7 @@ $teachers = $teacher->getteachersByStatus();
                             <p class="text-sm text-gray-900"><?= $teacher['created_At'] ?></p>
                         </div>
                     </div>
+                    <?php if(($teacher['status'] !== 'ACTIVE') && ($teacher['status'] !== 'REJECTED')): ?>
                     <div class="flex space-x-2">
                         <a href="../../controller/admin/requestsController.php?id=<?= htmlspecialchars($teacher['id'] ?? '') ?>&action=Accept" class="flex-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
                             Accept
@@ -145,6 +146,7 @@ $teachers = $teacher->getteachersByStatus();
                             Reject
                         </a>
                     </div>
+                    <?php endif ?>
                 </div>
                <?php endforeach ?>
             </div>
