@@ -1,3 +1,8 @@
+<?php 
+require_once __DIR__ . "/../../controller/admin/requestsController.php";  
+require_once __DIR__ . "/../../controller/admin/dashboard.php";  
+
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
@@ -63,7 +68,7 @@
                         </button>
                         <div class="absolute right-0 mt-2 w-48 bg-white rounded-xl shadow-lg py-2 hidden group-hover:block">
                             <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-primary-50">Profile Settings</a>
-                            <a href="#" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sign Out</a>
+                            <a href="../../controller/signout.php" class="block px-4 py-2 text-sm text-red-600 hover:bg-red-50">Sign Out</a>
                         </div>
                     </div>
                 </div>
@@ -83,7 +88,7 @@
             </div>
 
             <!-- Quick Stats -->
-            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4 mb-8">
+            <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-5 gap-4 mb-8">
                 <!-- Total Users -->
                 <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="100">
                     <div class="flex items-center">
@@ -92,7 +97,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-lg font-semibold text-gray-900">Total Users</h3>
-                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">2,543</p>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text"><?= $countUsers ?></p>
                         </div>
                     </div>
                 </div>
@@ -105,7 +110,7 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-lg font-semibold text-gray-900">Active Courses</h3>
-                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">156</p>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text"><?= $countCourses ?></p>
                         </div>
                     </div>
                 </div>
@@ -118,7 +123,33 @@
                         </div>
                         <div class="ml-4">
                             <h3 class="text-lg font-semibold text-gray-900">Teachers</h3>
-                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text">48</p>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text"><?= $countTeachers ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Categories -->
+                <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="400">
+                    <div class="flex items-center">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white">
+                            <i class="fas fa-folder"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-900">Categories</h3>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text"><?= $countCategories ?></p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tags -->
+                <div class="bg-white/80 backdrop-blur-md p-6 rounded-xl shadow-lg hover:shadow-xl transition-shadow duration-300" data-aos="fade-up" data-aos-delay="500">
+                    <div class="flex items-center">
+                        <div class="flex items-center justify-center h-12 w-12 rounded-full bg-gradient-to-r from-primary-500 to-secondary-500 text-white">
+                            <i class="fas fa-tags"></i>
+                        </div>
+                        <div class="ml-4">
+                            <h3 class="text-lg font-semibold text-gray-900">Tags</h3>
+                            <p class="text-2xl font-bold bg-gradient-to-r from-primary-600 to-secondary-500 text-transparent bg-clip-text"><?= $countTags ?></p>
                         </div>
                     </div>
                 </div>
@@ -131,46 +162,66 @@
              <div class="lg:col-span-2 lg:col-start-2 ">
                     <div class="bg-white/80 backdrop-blur-md rounded-xl shadow-lg p-6" data-aos="fade-up">
                         <h2 class="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
-                        <div class="space-y-4">
-                            <!-- User Management -->
-                            <button class="w-full flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-colors group">
-                                <div class="flex items-center">
-                                    <i class="fas fa-users text-gray-400 group-hover:text-primary-500"></i>
-                                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Users</span>
-                                </div>
-                                <i class="fas fa-chevron-right text-gray-400 group-hover:text-primary-500"></i>
-                            </button>
+                        <div class="grid grid-cols-3 gap-4">
+                            <!-- Top (Users) -->
+                            <div class="col-start-2">
+                                <a href="users.php" class="flex items-center h-24 justify-center p-4 rounded-lg border border-gray-200 hover:bg-primary-100 transition-colors group">
+                                    <div class="flex flex-col items-center text-center">
+                                        <i class="fas fa-users text-3xl text-gray-400 group-hover:text-primary-500 mb-2"></i>
+                                        <span class="text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Users</span>
+                                    </div>
+                                </a>
+                            </div>
 
-                            <!-- Content Management -->
-                            <button class="w-full flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-colors group">
-                                <div class="flex items-center">
-                                    <i class="fas fa-book text-gray-400 group-hover:text-primary-500"></i>
-                                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Content</span>
-                                </div>
-                                <i class="fas fa-chevron-right text-gray-400 group-hover:text-primary-500"></i>
-                            </button>
+                            <!-- Left (Categories) -->
+                            <div class="row-start-2">
+                                <a href="categories.php" class="flex items-center h-24 justify-center p-4 rounded-lg border border-gray-200 hover:bg-primary-100 transition-colors group">
+                                    <div class="flex flex-col items-center text-center">
+                                        <i class="fas fa-folder text-3xl text-gray-400 group-hover:text-primary-500 mb-2"></i>
+                                        <span class="text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Categories</span>
+                                    </div>
+                                </a>
+                            </div>
 
-                            <!-- Teacher Requests -->
-                            <button class="w-full flex items-center justify-between p-4 rounded-lg border border-gray-200 hover:border-primary-500 hover:bg-primary-50 transition-colors group">
-                                <div class="flex items-center">
-                                    <i class="fas fa-chalkboard-teacher text-gray-400 group-hover:text-primary-500"></i>
-                                    <span class="ml-3 text-sm font-medium text-gray-700 group-hover:text-primary-600">Teacher Requests</span>
-                                </div>
-                                <span class="bg-primary-100 text-primary-600 text-xs px-2 py-1 rounded-full">3</span>
-                            </button>
+                            <!-- Center (Content) -->
+                            <div class="row-start-2">
+                                <a href="courses.php" class="flex items-center h-24 justify-center p-4 rounded-lg border border-gray-200 hover:bg-primary-100 transition-colors group">
+                                    <div class="flex flex-col items-center text-center">
+                                        <i class="fas fa-book text-3xl text-gray-400 group-hover:text-primary-500 mb-2"></i>
+                                        <span class="text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Content</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Right (Tags) -->
+                            <div class="row-start-2">
+                                <a href="tags.php" class="flex items-center h-24 justify-center p-4 rounded-lg border border-gray-200 hover:bg-primary-100 transition-colors group">
+                                    <div class="flex flex-col items-center text-center">
+                                        <i class="fas fa-tags text-3xl text-gray-400 group-hover:text-primary-500 mb-2"></i>
+                                        <span class="text-sm font-medium text-gray-700 group-hover:text-primary-600">Manage Tags</span>
+                                    </div>
+                                </a>
+                            </div>
+
+                            <!-- Bottom (Teacher Requests) -->
+                            <div class="col-start-2 row-start-3">
+                                <a href="requests.php" class="flex items-center h-24 justify-center p-4 rounded-lg border border-gray-200 hover:bg-primary-100 transition-colors group">
+                                    <div class="flex flex-col items-center text-center">
+                                        <i class="fas fa-chalkboard-teacher text-3xl text-gray-400 group-hover:text-primary-500 mb-2"></i>
+                                        <span class="text-sm font-medium text-gray-700 group-hover:text-primary-600">Teacher Requests</span>
+                                        <?php if($requests > 0): ?>
+                                        <span class="mt-1 bg-primary-100 text-primary-600 text-xs px-2 py-1 rounded-full"><?= $requests ?></span>
+                                        <?php endif ?>
+                                    </div>
+                                </a>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </main>
-
-    <script>
-        // Initialize AOS
-        AOS.init({
-            duration: 800,
-            once: true
-        });
-    </script>
+    <script src="../../Assets/js/sweetAlert.js"></script>
+    <script src="../../Assets/js/aos.js"></script>
 </body>
 </html>
