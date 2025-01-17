@@ -1,6 +1,9 @@
 <?php 
-include_once __DIR__ . "/../../controller/admin/usersController.php";
+include_once __DIR__ . "/../../modal/admin.php";
 include_once __DIR__ . "/../../helpers/helper.php";
+session_start();
+$admin = new Admin();
+$users = $admin->getAllusers();
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -62,7 +65,7 @@ include_once __DIR__ . "/../../helpers/helper.php";
     <?php unset($_SESSION["successUS"]); endif; ?>
 
     <?php if(isset($_SESSION["errorUS"])): ?>
-    <div id="errorAlert" class="fixed top-4 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
+    <div id="errorAlert" class="fixed top-20 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
         <div class="flex items-center">
             <i class="fas fa-exclamation-circle mr-2"></i>
             <span><?php echo $_SESSION["errorUS"]; ?></span>
@@ -139,7 +142,7 @@ include_once __DIR__ . "/../../helpers/helper.php";
                          <?php 
                                $countUsers = 0;
                                foreach($users as $user):
-                               if($user['status'] !== 'PENDING'): $countUsers++; ?>
+                               if($user['status'] !== 'PENDING' && $user['role'] !== 'admin'): $countUsers++; ?>
                         <tr class="hover:bg-gray-50">
                             <td class="px-6 py-4 whitespace-nowrap">
                                 <div class="flex items-center">
@@ -169,35 +172,48 @@ include_once __DIR__ . "/../../helpers/helper.php";
                             break;
                             case 'ACTIVE': echo'bg-green-200 text-green-600';
                             break;
-                            case 'PENDING': echo'bg-yellow-200 text-yellow-600';
+                            case 'ARCHIVED': echo'bg-yellow-200 text-yellow-600';
                             break;
                         } ?> ">
-                                <?= $user['status'] ?>
+                                <?= $user['status'] ?> 
                                 </span>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">
                             <?= convertDateFormat( $user['created_At']) ?>
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                <button class="text-primary-600 hover:text-primary-900" title="Edit">
-                                    <i class="fas fa-edit"></i>
-                                </button>
-                                <?php if( $user['status'] !== 'ARCHIVED' &&  $user['status'] !== 'REJECTED'): ?>
-                                <button class="text-yellow-600 hover:text-yellow-900" title="Archive">
-                                    <i class="fas fa-archive"></i>
-                                </button>
-                                <?php elseif($user['status'] === 'REJECTED'):?>
-                                    <button class="text-green-600 hover:text-green-900" title="Accept User">
-                                            <i class="fas fa-check"></i>
+                                <?php if($user['status'] !== 'ARCHIVED' && $user['status'] !== 'REJECTED'): ?>
+                                <form action="../../controller/admin/usersController.php" method="POST" class="inline">
+                                    <input type="hidden" name="userId" value="<?php echo htmlspecialchars($user['id'] ?? ''); ?>">
+                                    <input type="hidden" name="action" value="suspend">
+                                    <button type="submit" class="text-yellow-600 hover:text-yellow-900" title="Archive">
+                                        <i class="fas fa-archive"></i>
                                     </button>
-                                 <?php else: ?>   
-                                    <button class="text-green-600 hover:text-green-900" title="Archive">
-                                    <i class="fas fa-check-circle"></i>
-                                </button>
+                                </form>
+                                <?php elseif($user['status'] === 'REJECTED'): ?>
+                                <form action="../../controller/admin/usersController.php" method="POST" class="inline">
+                                    <input type="hidden" name="userId" value="<?php echo htmlspecialchars($user['id'] ?? ''); ?>">
+                                    <input type="hidden" name="action" value="activate">
+                                    <button type="submit" class="text-green-600 hover:text-green-900" title="Accept User">
+                                        <i class="fas fa-check"></i>
+                                    </button>
+                                </form>
+                                <?php else: ?>   
+                                <form action="../../controller/admin/usersController.php" method="POST" class="inline">
+                                    <input type="hidden" name="userId" value="<?php echo htmlspecialchars($user['id'] ?? ''); ?>">
+                                    <input type="hidden" name="action" value="activate">
+                                    <button type="submit" class="text-green-600 hover:text-green-900" title="Archive">
+                                        <i class="fas fa-check-circle"></i>
+                                    </button>
+                                </form>
                                 <?php endif ?>
-                                <button class="text-red-600 hover:text-red-900" title="Delete">
-                                    <i class="fas fa-trash"></i>
-                                </button>
+                                <form action="../../controller/admin/usersController.php" method="POST" class="inline">
+                                    <input type="hidden" name="userId" value="<?php echo htmlspecialchars($user['id'] ?? ''); ?>">
+                                    <input type="hidden" name="action" value="delete">
+                                    <button type="submit" class="text-red-600 hover:text-red-900" title="Delete">
+                                        <i class="fas fa-trash"></i>
+                                    </button>
+                                </form>
                             </td>
                         </tr>
                         <?php endif ?>
