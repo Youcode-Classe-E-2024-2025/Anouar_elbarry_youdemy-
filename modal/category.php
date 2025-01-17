@@ -8,45 +8,44 @@ class Category {
         $this->db = new Database();
     }
 
-    /**
-     * Create a new category.
-     *
-     * @param string $name
-     * @param string $description
-     * @return bool
-     */
-    public function create($name, $description = '') {
-        // To be implemented
+    public function create($name) {
+        $conn = $this->db->getConnection();
+        $query = "INSERT INTO categories (name) VALUES (:name)";
+        try{
+            $stmt = $conn->prepare($query);
+            $stmt->execute(["name"=> $name]);
+            return true;
+        }catch(PDOException $e){
+            return false;
+        }
     }
 
-    /**
-     * Update an existing category.
-     *
-     * @param int $categoryId
-     * @param string $name
-     * @param string $description
-     * @return bool
-     */
-    public function update($categoryId, $name, $description = '') {
-        // To be implemented
+    public function delete($categoryId){
+        $conn = $this->db->getConnection();
+        $query = "DELETE FROM categories WHERE id = :categoryId";
+        try{
+            $stmt = $conn->prepare($query);
+            $stmt->execute(["category_id"=> $categoryId]);
+            return true;
+        }catch(PDOException $e){
+            return false;
+        }
+    }
+    public function update($categoryId,$name){
+        $conn = $this->db->getConnection();
+        $query = "UPDATE categories SET name = :name  WHERE id = :categoryId";
+        try{
+            $stmt = $conn->prepare($query);
+            $stmt->execute([
+                "category_id"=> $categoryId,
+                "name"=> $$name
+            ]);
+            return true;
+        }catch(PDOException $e){
+            return false;
+        }
     }
 
-    /**
-     * Delete a category.
-     *
-     * @param int $categoryId
-     * @return bool
-     */
-    public function delete($categoryId) {
-        // To be implemented
-    }
-
-    /**
-     * Get category details by ID.
-     *
-     * @param int $categoryId
-     * @return array|bool Returns category data if found, false otherwise.
-     */
     public function getCategoryById($categoryId) {
         // To be implemented
     }
@@ -57,15 +56,13 @@ class Category {
      * @return array Returns a list of all categories.
      */
     public function getAllCategories() {
-        // To be implemented
+        $conn = $this->db->getConnection();
+        $query = 'SELECT id, name, created_At FROM categories ORDER BY id ASC';
+        $stmt = $conn->prepare($query);
+        $stmt->execute();
+        return $stmt->fetchAll(PDO::FETCH_ASSOC);
     }
 
-    /**
-     * Get tags for a specific category.
-     *
-     * @param int $categoryId
-     * @return array Returns a list of tags for the category.
-     */
     public function getTagsByCategory($categoryId) {
         // To be implemented
     }
