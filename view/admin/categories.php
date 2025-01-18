@@ -139,7 +139,7 @@ $categories = $categoryController->getAllCategories();
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= convertDateFormat($category['created_at'])  ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-primary-600 hover:text-primary-900 mr-3">
+                                    <button onclick="openUpdateModal(<?= $category['id'] ?>, '<?= $category['name'] ?>')" data-modal-target="update-category-modal" data-modal-toggle="update-category-modal"  class="text-primary-600 hover:text-primary-900 mr-3">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <form method="POST" class="text-red-600 hover:text-red-900">
@@ -169,7 +169,7 @@ $categories = $categoryController->getAllCategories();
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <form id="categoryForm" class="p-6" method="POST" onsubmit="return validateForm()">
+                <form class="categoryForm p-6" method="POST" onsubmit="return validateForm()">
                     <div class="mb-6">
                         <label for="category-name" class="block mb-2 text-sm font-medium text-gray-900">Category Name</label>
                         <input type="text" id="category-name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" required>
@@ -179,6 +179,32 @@ $categories = $categoryController->getAllCategories();
                     </div>
                     <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
                         Add Category
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- update Category Modal -->
+    <div id="update-category-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow">
+                <div class="flex items-start justify-between p-4 border-b rounded-t">
+                    <h3 class="text-xl font-semibold text-gray-900">Update Category</h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center" data-modal-hide="update-category-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form class="categoryForm p-6" method="POST" onsubmit="return validateForm_Update()">
+                    <div class="mb-6">
+                        <label for="category-name-update" class="block mb-2 text-sm font-medium text-gray-900">Category Name</label>
+                        <input type="text" id="category-name-update" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" required>
+                        <span id="nameError-update" class="text-red-500 text-sm mt-1 hidden">Please enter a valid category name (3-50 characters, letters, numbers, spaces, and hyphens only)</span>
+                        <input name="update" type="hidden" value="3">
+                        <input id="category-id-update" name="categoryId" type="hidden" value="">
+                        <input name="CSRF" value="<?= generateCsrfToken() ?>" type="hidden">
+                    </div>
+                    <button type="submit" class="w-full text-white bg-green-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
+                        Update Category
                     </button>
                 </form>
             </div>
@@ -203,10 +229,22 @@ $categories = $categoryController->getAllCategories();
             nameError.classList.add('hidden');
             return true;
         }
+        function validateForm_Update() {
+            const categoryName = document.getElementById('category-name-update').value.trim();
+            const nameError = document.getElementById('nameError-update');
+            const regex = /^[a-zA-Z0-9\s-]{3,50}$/;
+
+            if (!regex.test(categoryName)) {
+                nameError.classList.remove('hidden');
+                return false;
+            }
+            nameError.classList.add('hidden');
+            return true;
+        }
 
         // Clear form after successful submission
         <?php if(isset($_SESSION['successCAT'])): ?>
-        document.getElementById('categoryForm').reset();
+        document.querySelector('categoryForm').reset();
         const modal = document.getElementById('add-category-modal');
         const modalInstance = flowbite.Modal.getInstance(modal);
         if (modalInstance) {
@@ -225,6 +263,22 @@ $categories = $categoryController->getAllCategories();
                 nameError.classList.add('hidden');
             }
         });
+        document.getElementById('category-name-update').addEventListener('input', function() {
+            const nameError = document.getElementById('nameError-update');
+            const regex = /^[a-zA-Z0-9\s-]{3,50}$/;
+            
+            if (this.value.trim() !== '' && !regex.test(this.value.trim())) {
+                nameError.classList.remove('hidden');
+            } else {
+                nameError.classList.add('hidden');
+            }
+        });
+
+        function openUpdateModal(id, name) {
+            // Set the category name in the update form
+            document.getElementById('category-name-update').value = name;
+            document.getElementById('category-id-update').value = id;
+        }
     </script>
 </body>
 </html>
