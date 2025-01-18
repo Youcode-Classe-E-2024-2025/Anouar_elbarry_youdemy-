@@ -1,9 +1,15 @@
+<?php
+require_once __DIR__ . "/../../controller/teacher/creat_couse.php";
+?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Create New Course - EduPro</title>
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+    <link rel="stylesheet" href="../../Assets/css/tagify.css">
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = {
@@ -370,7 +376,6 @@ console.log('Code block');
                                        class="pl-10 py-2 w-full rounded-lg border-2 border-gray-200 shadow-sm focus:border-primary-500 focus:ring focus:ring-primary-200 focus:ring-opacity-50 transition-colors duration-200"
                                        placeholder="e.g., javascript, web development, programming">
                             </div>
-                            <p class="mt-1 text-sm text-gray-500">Separate tags with commas</p>
                         </div>
                     </div>
 
@@ -386,6 +391,7 @@ console.log('Code block');
         </div>
     </main>
     <script src="../../Assets/js/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
     <script>
         // Toggle between video and static inputs
         const videoInput = document.getElementById('video-input');
@@ -478,7 +484,18 @@ console.log('Code block');
         
         // Initial preview
         updatePreview();
+
+        // Initialize Tagify
+        var input = document.querySelector('input[name=tags]'),
+    tagify = new Tagify(input, {
+        enforceWhitelist : true,
+        delimiters       : null,
+        whitelist        : [<?php echo implode(',', array_map(function($tag) { return '"' . strtolower($tag['name']) . '"'; }, $tags)); ?>],
+        callbacks        : {
+            add    : console.log,
+            remove : console.log   
+        }
+    })
     </script>
-    <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </body>
 </html>
