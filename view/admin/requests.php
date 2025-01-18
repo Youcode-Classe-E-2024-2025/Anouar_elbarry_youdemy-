@@ -1,10 +1,5 @@
 <?php
-session_start();
-require_once __DIR__ . "/../../modal/teacher.php"; 
-require_once __DIR__ . "/../../modal/admin.php"; 
-require_once __DIR__ . "/../../modal/user.php"; 
-$teacher = new Teacher();
-$teachers = $teacher->getteachersByStatus();
+require_once __DIR__ . "/../../controller/admin/requestsController.php";  
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -146,10 +141,10 @@ $teachers = $teacher->getteachersByStatus();
                     </div>
                     <?php if(($teacher['status'] !== 'ACTIVE') && ($teacher['status'] !== 'REJECTED')): ?>
                     <div class="flex space-x-2">
-                        <a href="../../controller/admin/requestsController.php?id=<?= htmlspecialchars($teacher['id'] ?? '') ?>&action=Accept" class="flex-1 px-4 py-2 bg-primary-500 text-white rounded-lg hover:bg-primary-600 transition-colors">
+                        <a href="../../controller/admin/requestsController.php?id=<?= htmlspecialchars($teacher['id'] ?? '') ?>&action=Accept" class="flex-1 px-4 py-2 bg-green-500 text-white rounded-lg hover:bg-green-600 transition-colors">
                             Accept
                         </a>
-                        <a href="../../controller/admin/requestsController.php?id=<?= htmlspecialchars($teacher['id']) ?? ''?>&action=Reject" class="flex-1 px-4 py-2 bg-gray-100 text-gray-700 rounded-lg hover:bg-gray-200 transition-colors">
+                        <a href="../../controller/admin/requestsController.php?id=<?= htmlspecialchars($teacher['id']) ?? ''?>&action=Reject" class="flex-1 px-4 py-2 bg-red-500 text-white rounded-lg hover:bg-red-600 transition-colors">
                             Reject
                         </a>
                     </div>
