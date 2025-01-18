@@ -9,13 +9,20 @@ class Tag {
     }
 
 
-    public function create($name) {
-           $conn = $this->db->getConnection();
-           $query = "INSERT INTO tags (name) VALUE (:name)";
-           $stmt = $conn->prepare($query);
-           $stmt->execute(["name" => $name]);
-           return $conn->lastInsertId();
-    }
+    public function create($tags) {
+        $tags = json_decode($tags);
+        try{
+            foreach($tags as $tag){
+                $conn = $this->db->getConnection();
+                $query = "INSERT IGNORE INTO tags (name) VALUE (:name)";
+                $stmt = $conn->prepare($query);
+                $stmt->execute(["name" => $tag->value]);
+         }
+         return $conn->lastInsertId();
+        }catch(PDOException $e){
+            return $e;
+        }
+        }
 
     public function update($name,$tagId) {
         $conn = $this->db->getConnection();
@@ -64,6 +71,8 @@ class Tag {
            return $result;
     }
 
+
+    
     /**
      * Get tags by category ID.
      *
