@@ -14,7 +14,7 @@ class Category {
         try{
             $stmt = $conn->prepare($query);
             $stmt->execute(["name"=> $name]);
-            return true;
+            return $conn->lastInsertId();
         }catch(PDOException $e){
             return false;
         }
@@ -25,7 +25,7 @@ class Category {
         $query = "DELETE FROM categories WHERE id = :categoryId";
         try{
             $stmt = $conn->prepare($query);
-            $stmt->execute(["category_id"=> $categoryId]);
+            $stmt->execute(["categoryId"=> $categoryId]);
             return true;
         }catch(PDOException $e){
             return false;
@@ -33,12 +33,12 @@ class Category {
     }
     public function update($categoryId,$name){
         $conn = $this->db->getConnection();
-        $query = "UPDATE categories SET name = :name  WHERE id = :categoryId";
+        $query = "UPDATE categories SET name = :name WHERE id = :categoryId";
         try{
             $stmt = $conn->prepare($query);
             $stmt->execute([
-                "category_id"=> $categoryId,
-                "name"=> $$name
+                "categoryId" => $categoryId,
+                "name" => $name
             ]);
             return true;
         }catch(PDOException $e){
@@ -57,7 +57,7 @@ class Category {
      */
     public function getAllCategories() {
         $conn = $this->db->getConnection();
-        $query = 'SELECT id, name, created_At FROM categories ORDER BY id ASC';
+        $query = 'SELECT * FROM categories ORDER BY id ASC';
         $stmt = $conn->prepare($query);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -67,4 +67,3 @@ class Category {
         // To be implemented
     }
 }
-?>
