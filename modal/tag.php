@@ -8,37 +8,42 @@ class Tag {
         $this->db = new Database();
     }
 
-    /**
-     * Create a new tag.
-     *
-     * @param string $name
-     * @param int $categoryId
-     * @return bool
-     */
-    public function create($name, $categoryId) {
-        // To be implemented
+
+    public function create($name) {
+           $conn = $this->db->getConnection();
+           $query = "INSERT INTO tags (name) VALUE (:name)";
+           $stmt = $conn->prepare($query);
+           $stmt->execute(["name" => $name]);
+           return $conn->lastInsertId();
     }
 
-    /**
-     * Update an existing tag.
-     *
-     * @param int $tagId
-     * @param string $name
-     * @param int $categoryId
-     * @return bool
-     */
-    public function update($tagId, $name, $categoryId) {
-        // To be implemented
+    public function update($name,$tagId) {
+        $conn = $this->db->getConnection();
+        $query = "UPDATE tags SET name = :name WHERE id = :tagId" ;
+        try{
+        $stmt = $conn->prepare($query);
+        $stmt->execute([
+            "name" => $name,
+            "tagId" => $tagId
+        ]);
+        return true;
+    }catch(PDOException $e){
+        return $e;
+    }
     }
 
-    /**
-     * Delete a tag.
-     *
-     * @param int $tagId
-     * @return bool
-     */
+
     public function delete($tagId) {
-        // To be implemented
+          $conn = $this->db->getConnection();
+          $query = "DELETE FROM tags WHERE id = :tagId";
+          try{
+            $stmt = $conn->prepare($query);
+            $stmt->execute(["tagId" => $tagId]);
+            return true;
+          }catch(PDOException $e){
+             return false;
+          }
+          
     }
 
     /**
@@ -51,13 +56,12 @@ class Tag {
         // To be implemented
     }
 
-    /**
-     * Get all tags.
-     *
-     * @return array Returns a list of all tags.
-     */
     public function getAllTags() {
-        // To be implemented
+           $query = "SELECT * FROM tags";
+           $stmt = $this->db->getConnection()->prepare($query);
+           $stmt->execute();
+           $result = $stmt->fetchAll(PDO::FETCH_ASSOC);
+           return $result;
     }
 
     /**
