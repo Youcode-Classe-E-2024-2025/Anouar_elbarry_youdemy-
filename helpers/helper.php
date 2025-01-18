@@ -1,7 +1,10 @@
 <?php
 function dd($var){
+    echo"<pre>";
    var_dump($var);
+   echo "------------------------------------";
    print_r($var);
+   echo"</pre>";
    die();
 }
 function convertDateFormat($dateString) {
