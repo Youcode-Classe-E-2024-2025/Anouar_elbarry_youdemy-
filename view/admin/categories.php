@@ -2,6 +2,9 @@
 require_once __DIR__ . "/../../controller/admin/categoriesController.php";
 require_once __DIR__ . "/../../helpers/helper.php";
 require_once __DIR__ . "/../../helpers/CSRF.php";
+
+$categories = $categoryController->getAllCategories();
+// dd($categories);
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -131,17 +134,20 @@ require_once __DIR__ . "/../../helpers/CSRF.php";
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">
-                                    <?= $statistics->countCoursesBycategory($category['id']) ?> Courses
+                                    <?= $categoryController->countCoursesBycategory($category['id']) ?> Courses
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= convertDateFormat($category['created_At'])  ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= convertDateFormat($category['created_at'])  ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
                                     <button class="text-primary-600 hover:text-primary-900 mr-3">
                                         <i class="fas fa-edit"></i>
                                     </button>
-                                    <button class="text-red-600 hover:text-red-900">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    <form method="POST" class="text-red-600 hover:text-red-900">
+                                       <button type="submit"><i class="fas fa-trash"></i></button> 
+                                        <input name="delete" type="hidden" value="2">       
+                                        <input name="categoryId" type="hidden" value="<?= $category['id'] ?>">       
+                                        <input name="CSRF" value="<?= generateCsrfToken() ?>" type="hidden">
+                                    </form>
                                 </td>
                             </tr>
                             <?php endforeach ?>
@@ -163,11 +169,12 @@ require_once __DIR__ . "/../../helpers/CSRF.php";
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <form class="p-6" method="">
+                <form id="categoryForm" class="p-6" method="POST" onsubmit="return validateForm()">
                     <div class="mb-6">
                         <label for="category-name" class="block mb-2 text-sm font-medium text-gray-900">Category Name</label>
                         <input type="text" id="category-name" name="name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" required>
-                        <input name="name" type="hidden">
+                        <span id="nameError" class="text-red-500 text-sm mt-1 hidden">Please enter a valid category name (3-50 characters, letters, numbers, spaces, and hyphens only)</span>
+                        <input name="create" type="hidden" value="1">
                         <input name="CSRF" value="<?= generateCsrfToken() ?>" type="hidden">
                     </div>
                     <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
@@ -182,9 +189,41 @@ require_once __DIR__ . "/../../helpers/CSRF.php";
     <script src="../../Assets/js/sweetAlert.js"></script>
     <script src="../../Assets/js/aos.js"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out'
+
+        // Category name validation
+        function validateForm() {
+            const categoryName = document.getElementById('category-name').value.trim();
+            const nameError = document.getElementById('nameError');
+            const regex = /^[a-zA-Z0-9\s-]{3,50}$/;
+
+            if (!regex.test(categoryName)) {
+                nameError.classList.remove('hidden');
+                return false;
+            }
+            nameError.classList.add('hidden');
+            return true;
+        }
+
+        // Clear form after successful submission
+        <?php if(isset($_SESSION['successCAT'])): ?>
+        document.getElementById('categoryForm').reset();
+        const modal = document.getElementById('add-category-modal');
+        const modalInstance = flowbite.Modal.getInstance(modal);
+        if (modalInstance) {
+            setTimeout(() => modalInstance.hide(), 1000);
+        }
+        <?php endif; ?>
+
+        // Real-time validation
+        document.getElementById('category-name').addEventListener('input', function() {
+            const nameError = document.getElementById('nameError');
+            const regex = /^[a-zA-Z0-9\s-]{3,50}$/;
+            
+            if (this.value.trim() !== '' && !regex.test(this.value.trim())) {
+                nameError.classList.remove('hidden');
+            } else {
+                nameError.classList.add('hidden');
+            }
         });
     </script>
 </body>
