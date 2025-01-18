@@ -1,5 +1,7 @@
 <?php 
 require_once __DIR__ . "/../../helpers/CSRF.php";
+require_once __DIR__ . "/../../controller/admin/tagsController.php";
+
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
@@ -120,29 +122,36 @@ require_once __DIR__ . "/../../helpers/CSRF.php";
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
+                        <?php $counter = 0; foreach($tags as $tag): ?>
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">1</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $counter++; ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
-                                        <div class="text-sm font-medium text-gray-900">JavaScript</div>
+                                        <div class="text-sm font-medium text-gray-900"><?= $tag['name'] ?></div>
                                     </div>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">
-                                        8 Courses
+                                    <?= $tag['id'] ?> Courses
                                     </span>
                                 </td>
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500">2024-01-17</td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $tag['created_at'] ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button class="text-primary-600 hover:text-primary-900 mr-3">
-                                        <i class="fas fa-edit"></i>
+                                    <div class="actions flex">
+                                    <button id="update_tag" onclick="openUpdateModal(<?= $tag['id'] ?>, '<?= $tag['name'] ?>')" class="text-green-600 hover:text-green-900 mr-3" data-modal-target="update-tag-modal" data-modal-toggle="update-tag-modal" >
+                                       <i class="fas fa-edit"></i>
+                                       <input type="hidden" value="<?= $tag['id'] ?>">
                                     </button>
-                                    <button class="text-red-600 hover:text-red-900">
-                                        <i class="fas fa-trash"></i>
-                                    </button>
+                                    <form method="POST" class="text-red-600 hover:text-red-900">
+                                       <button type="submit"><i class="fas fa-trash"></i></button> 
+                                       <input type="hidden" name="delete"> 
+                                    </form>
+                                    </div>
+                                    
                                 </td>
                             </tr>
-                            <!-- Add more tag rows here -->
+                            <?php endforeach ?>
+                         
                         </tbody>
                     </table>
                 </div>
@@ -156,18 +165,50 @@ require_once __DIR__ . "/../../helpers/CSRF.php";
             <div class="relative bg-white rounded-lg shadow">
                 <div class="flex items-start justify-between p-4 border-b rounded-t">
                     <h3 class="text-xl font-semibold text-gray-900">Add New Tag</h3>
-                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center" data-modal-hide="add-tag-modal">
+                    <button type="button"   class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center" data-modal-hide="add-tag-modal">
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <form class="p-6" method="POST">
+                <form class="p-6" method="POST" action="">
                     <div class="mb-6">
                         <label for="tag-name" class="block mb-2 text-sm font-medium text-gray-900">Tag Name</label>
-                        <input name='Tags'  placeholder="add Tags" autofocus>
+                        <input name='tags'  placeholder="add Tags" autofocus>
                         <input name="CSRF" value="<?= generateCsrfToken() ?>" type="hidden">
+                        <input name="create" type="hidden">
                     </div>
                     <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
                         Add Tag
+                    </button>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- update Tag Modal -->
+    <div id="update-tag-modal" tabindex="-1" aria-hidden="true" class="fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full">
+        <div class="relative w-full max-w-md max-h-full">
+            <div class="relative bg-white rounded-lg shadow">
+                <div class="flex items-start justify-between p-4 border-b rounded-t">
+                    <h3 class="text-xl font-semibold text-gray-900">update Tag</h3>
+                    <button type="button" class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm w-8 h-8 ml-auto inline-flex justify-center items-center" data-modal-hide="update-tag-modal">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                <form class="p-6" method="POST" action="">
+                    <div class="mb-6">
+                        <label for="tag-name-update" class="block mb-2 text-sm font-medium text-gray-900">Tag Name</label>
+                        <input type="text" 
+                               id="tag-name-update" 
+                               name="tag-name" 
+                               class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-green-500 focus:border-green-500 block w-full p-2.5 transition-colors" 
+                               placeholder="Enter tag name"
+                               required>
+                        <span id="nameError-update" class="text-red-500 text-sm mt-1 hidden">Please enter a valid tag name (3-50 characters, letters, numbers, spaces, and hyphens only)</span>
+                        <input name="CSRF" value="<?= generateCsrfToken() ?>" type="hidden">
+                        <input name="update" type="hidden">
+                        <input id="tag-id-update" name="tagId" value="" type="hidden">
+                    </div>
+                    <button type="submit" class="w-full text-white bg-green-600 hover:bg-green-700 focus:ring-4 focus:ring-green-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
+                        Update Tag
                     </button>
                 </form>
             </div>
@@ -179,8 +220,15 @@ require_once __DIR__ . "/../../helpers/CSRF.php";
     <script src="../../Assets/js/aos.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script>
+
+            function openUpdateModal(id, name) {
+            // Set the category name in the update form
+            document.getElementById('tag-name-update').value = name;
+            document.getElementById('tag-id-update').value = id;
+        }
         // The DOM element you wish to replace with Tagify
-var input = document.querySelector('input[name=Tags]');
+     
+var input = document.querySelector('input[name=tags]');
 
 // initialize Tagify on the above input node reference
 new Tagify(input)
