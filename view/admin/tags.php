@@ -132,7 +132,7 @@ require_once __DIR__ . "/../../controller/admin/tagsController.php";
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <span class="px-3 py-1 inline-flex text-sm leading-5 font-semibold rounded-full bg-primary-100 text-primary-800">
-                                    <?= $tag['id'] ?> Courses
+                                    <?= count( $tagController->countCourses( $tag['id'])) ?> Courses
                                     </span>
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $tag['created_at'] ?></td>
@@ -145,6 +145,7 @@ require_once __DIR__ . "/../../controller/admin/tagsController.php";
                                     <form method="POST" class="text-red-600 hover:text-red-900">
                                        <button type="submit"><i class="fas fa-trash"></i></button> 
                                        <input type="hidden" name="delete"> 
+                                       <input type="hidden" name="tagId" value="<?=  $tag['id'] ?>"> 
                                     </form>
                                     </div>
                                     
