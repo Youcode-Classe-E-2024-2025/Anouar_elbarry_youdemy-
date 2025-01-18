@@ -1,5 +1,6 @@
 <?php
 require_once __DIR__ . "/../../modal/tag.php";
+require_once __DIR__ . "/../../modal/course.php";
 require_once __DIR__ . "/../../helpers/CSRF.php";
 require_once __DIR__ . "/../../helpers/helper.php";
 
@@ -9,6 +10,7 @@ class TagsController {
       private Course $course ;
 
       public function __construct(){
+        session_start();
         $this->tag = new Tag();
         $this->course = new Course();
       }
@@ -37,9 +39,9 @@ class TagsController {
     }
 
     public function update() {
-        if (isset($_POST['name'])) {
+        if (isset($_POST['tag-name'])) {
             $tagId = $_POST['tagId'];
-            $name = trim($_POST['name']);
+            $name = trim($_POST['tag-name']);
 
       
                 $result = $this->tag->update($name,$tagId);
@@ -68,9 +70,9 @@ class TagsController {
     }
 
 $tag = new TagsController();
-if($_SERVER['REQUEST_METHOD'] == 'POST' && validateCsrfToken($_POST['CSRF'])){
+if($_SERVER['REQUEST_METHOD'] == 'POST'){
     if (isset($_POST['create'])) {
-        $tag->create();
+      $result = $tag->create();
         header("Location: " . $_SERVER['PHP_SELF']);
         exit();
     } elseif (isset($_POST['update'])) {
