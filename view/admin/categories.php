@@ -124,9 +124,9 @@ $categories = $categoryController->getAllCategories();
                             </tr>
                         </thead>
                         <tbody class="bg-white divide-y divide-gray-200">
-                            <?php  foreach($categories as $category): ?>
+                            <?php $counter =0; foreach($categories as $category): ?>
                             <tr class="hover:bg-gray-50">
-                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $category['id'] ?></td>
+                                <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= $counter++; ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap">
                                     <div class="flex items-center">
                                         <div class="text-sm font-medium text-gray-900"><?= $category['name'] ?></div>
@@ -139,7 +139,8 @@ $categories = $categoryController->getAllCategories();
                                 </td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm text-gray-500"><?= convertDateFormat($category['created_at'])  ?></td>
                                 <td class="px-6 py-4 whitespace-nowrap text-sm font-medium">
-                                    <button onclick="openUpdateModal(<?= $category['id'] ?>, '<?= $category['name'] ?>')" data-modal-target="update-category-modal" data-modal-toggle="update-category-modal"  class="text-primary-600 hover:text-primary-900 mr-3">
+                                    <div class="actions flex">
+                                    <button onclick="openUpdateModal(<?= $category['id'] ?>, '<?= $category['name'] ?>')" data-modal-target="update-category-modal" data-modal-toggle="update-category-modal"  class="text-green-600 hover:text-green-900 mr-3">
                                         <i class="fas fa-edit"></i>
                                     </button>
                                     <form method="POST" class="text-red-600 hover:text-red-900">
@@ -148,10 +149,10 @@ $categories = $categoryController->getAllCategories();
                                         <input name="categoryId" type="hidden" value="<?= $category['id'] ?>">       
                                         <input name="CSRF" value="<?= generateCsrfToken() ?>" type="hidden">
                                     </form>
+                                    </div>
                                 </td>
                             </tr>
                             <?php endforeach ?>
-                            <!-- Add more category rows here -->
                         </tbody>
                     </table>
                 </div>
@@ -245,10 +246,14 @@ $categories = $categoryController->getAllCategories();
         // Clear form after successful submission
         <?php if(isset($_SESSION['successCAT'])): ?>
         document.querySelector('categoryForm').reset();
-        const modal = document.getElementById('add-category-modal');
-        const modalInstance = flowbite.Modal.getInstance(modal);
-        if (modalInstance) {
-            setTimeout(() => modalInstance.hide(), 1000);
+        const modalAdd = document.getElementById('add-category-modal');
+        const modalUpdate = document.getElementById('update-category-modal');
+        const modalInstanceAdd = flowbite.Modal.getInstance(modalAdd);
+        const modalInstanceUpdate = flowbite.Modal.getInstance(modalUpdate);
+        if (modalInstanceAdd) {
+            setTimeout(() => modalInstanceAdd.hide(), 1000);
+        }if (modalInstanceUpdate) {
+            setTimeout(() => modalInstanceUpdate.hide(), 1000);
         }
         <?php endif; ?>
 
