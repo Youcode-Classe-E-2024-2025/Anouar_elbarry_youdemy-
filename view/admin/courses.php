@@ -152,9 +152,9 @@ $courses = $course->getAllCourses();
                                    echo $enrollmentCount[0]['COUNT(*)']; ?> Students
                             </td>
                             <td class="px-6 py-4 whitespace-nowrap text-sm font-medium space-x-2">
-                                <button class="text-primary-600 hover:text-primary-900" title="View Details">
+                                <a href="../../view/course/course-details.php?courseId=<?= htmlspecialchars($course['id']) ?>&action=show" class="text-primary-600 hover:text-primary-900" title="View Details">
                                     <i class="fas fa-eye"></i>
-                                </button>
+                                </a>
                                 <button class="text-yellow-600 hover:text-yellow-900" title="Archive">
                                     <i class="fas fa-archive"></i>
                                 </button>
