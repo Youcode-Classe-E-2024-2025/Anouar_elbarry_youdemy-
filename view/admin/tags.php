@@ -1,11 +1,12 @@
 <?php 
-require_once __DIR__ . "/../../controller/admin/requestsController.php";
+require_once __DIR__ . "/../../helpers/CSRF.php";
 ?>
 <!DOCTYPE html>
 <html lang="en" class="scroll-smooth">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet">
     <title>Tags Management - EduPro</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
@@ -48,29 +49,29 @@ require_once __DIR__ . "/../../controller/admin/requestsController.php";
 </head>
 <body class="bg-gradient-to-b from-primary-50 to-white min-h-screen">
     <!-- Success/Error Messages -->
-    <?php if(isset($_SESSION["successUS"])): ?>
+    <?php if(isset($_SESSION["successTG"])): ?>
     <div id="successAlert" class="fixed top-20 right-4 bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded z-50">
         <div class="flex items-center">
             <i class="fas fa-check-circle mr-2"></i>
-            <span><?php echo $_SESSION["successUS"]; ?></span>
+            <span><?php echo $_SESSION["successTG"]; ?></span>
             <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     </div>
-    <?php unset($_SESSION["successUS"]); endif; ?>
+    <?php unset($_SESSION["successTG"]); endif; ?>
 
-    <?php if(isset($_SESSION["errorUS"])): ?>
+    <?php if(isset($_SESSION["errorTG"])): ?>
     <div id="errorAlert" class="fixed top-20 right-4 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded z-50">
         <div class="flex items-center">
             <i class="fas fa-exclamation-circle mr-2"></i>
-            <span><?php echo $_SESSION["errorUS"]; ?></span>
+            <span><?php echo $_SESSION["errorTG"]; ?></span>
             <button onclick="this.parentElement.parentElement.style.display='none'" class="ml-4">
                 <i class="fas fa-times"></i>
             </button>
         </div>
     </div>
-    <?php unset($_SESSION["errorUS"]); endif; ?>
+    <?php unset($_SESSION["errorTG"]); endif; ?>
 
     <!-- Navigation -->
     <nav class="bg-white/80 backdrop-blur-md shadow-lg fixed w-full z-50">
@@ -159,10 +160,11 @@ require_once __DIR__ . "/../../controller/admin/requestsController.php";
                         <i class="fas fa-times"></i>
                     </button>
                 </div>
-                <form class="p-6">
+                <form class="p-6" method="POST">
                     <div class="mb-6">
                         <label for="tag-name" class="block mb-2 text-sm font-medium text-gray-900">Tag Name</label>
-                        <input type="text" id="tag-name" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-primary-500 focus:border-primary-500 block w-full p-2.5" required>
+                        <input name='Tags'  placeholder="add Tags" autofocus>
+                        <input name="CSRF" value="<?= generateCsrfToken() ?>" type="hidden">
                     </div>
                     <button type="submit" class="w-full text-white bg-primary-600 hover:bg-primary-700 focus:ring-4 focus:ring-primary-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center transition-colors">
                         Add Tag
@@ -175,11 +177,13 @@ require_once __DIR__ . "/../../controller/admin/requestsController.php";
     <script src="https://cdnjs.cloudflare.com/ajax/libs/flowbite/2.2.1/flowbite.min.js"></script>
     <script src="../../Assets/js/sweetAlert.js"></script>
     <script src="../../Assets/js/aos.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
     <script>
-        AOS.init({
-            duration: 800,
-            easing: 'ease-in-out'
-        });
+        // The DOM element you wish to replace with Tagify
+var input = document.querySelector('input[name=Tags]');
+
+// initialize Tagify on the above input node reference
+new Tagify(input)
     </script>
 </body>
 </html>
